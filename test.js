@@ -1,16 +1,17 @@
-
+let countries;
 fetch(
     "https://raw.githubusercontent.com/iancoleman/cia_world_factbook_api/master/data/factbook.json"
 )
     .then(resp => resp.json())
     .then(function (json) {
-        // debugger
-        // console.log(Object.entries(json.countries))
-        let randomCountry = getRandomCountry(json)
-        // console.log(randomCountry)
-        // console.log(getCountryFacts(randomCountry))
-        renderQuestion(getCountryFacts(randomCountry), json)
+        countries = json;
+        loadNextQuestion(countries)
     })
+
+function loadNextQuestion(countries) {
+    let randomCountry = getRandomCountry(countries)
+    renderQuestion(getCountryFacts(randomCountry), countries)
+}
 
 function getRandomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -39,16 +40,17 @@ function getCountryFacts(country) {
 
 function renderQuestion(countryFacts, json) {
     console.log(countryFacts)
-    let questionContainer = document.querySelector(".questionCard")
+    let pageContainer = document.querySelector(".pageContainer")
+    pageContainer.innerHTML = ""
     let buttonArray = []
-    buttonArray.push(`<button onclick='questionAnswered(this)'>${countryFacts.countryName}</button>`)
+    buttonArray.push(`<button>${countryFacts.countryName}</button>`)
     for (let i = 0; i < 3; i++) {
         let randomCountryName = getRandomCountry(json)[1].data.name
-        buttonArray.push(`<button onclick='questionAnswered(this)'>${randomCountryName}</button>`)
+        buttonArray.push(`<button>${randomCountryName}</button>`)
     }
     buttonArray = shuffle(buttonArray)
-    questionContainer.insertAdjacentHTML("beforeend",
-        `<h1> What Country am I ?</h1 >
+    pageContainer.insertAdjacentHTML("beforeend",
+        `<div class='questionContainer'><h1> What Country am I ?</h1 >
         <ul>
             <li>I am ${countryFacts.countryComparativeSize}</li>
             <li>My Flag has ${countryFacts.flagDescription}</li>
@@ -56,12 +58,30 @@ function renderQuestion(countryFacts, json) {
             <li>The population rank of this country is #${countryFacts.populationRank}</li>
             <li>My country borders the following: ${countryFacts.countryLandBoundaries.join(", ")}</li>
         </ul>
-        ${buttonArray.join(' ')}`)
+        ${buttonArray.join(' ')}</div>`)
+    giveAnswer(countryFacts)
+}
+
+function giveAnswer(countryFacts) {
+    let questionContainer = document.querySelector(".questionContainer")
+    questionContainer.addEventListener("click", function (event) {
+        if (event.target.tagName == 'BUTTON') {
+            if (countryFacts.countryName == event.target.innerText) {
+                alert("You right")
+            }
+            else {
+                alert("You wrong")
+            }
+            loadNextQuestion(countries)
+        }
+    })
 }
 
 function questionAnswered(button) {
     console.log(button)
+    // if (button.innerText == )
 }
+
 
 
 var shuffle = function (array) {
