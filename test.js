@@ -22,6 +22,7 @@ function validQuestion(randomCountry) {
         randomCountry[1].data.people == undefined ||
         randomCountry[1].data.people.population == undefined ||
         randomCountry[1].data.people.population.global_rank == undefined ||
+        randomCountry[1].data.people.religions == undefined ||
         randomCountry[1].data.people.religions.religion[0].name == undefined ||
         randomCountry[1].data.government == undefined) {
         return false
