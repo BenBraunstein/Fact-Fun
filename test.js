@@ -5,13 +5,12 @@ fetch(
     .then(resp => resp.json())
     .then(function (json) {
         countries = json;
-        // debugger
         loadNextQuestion(countries)
     })
 
 function loadNextQuestion(countries) {
     let randomCountry = getRandomCountry(countries)
-    while(validQuestion(randomCountry) == false ) {
+    while (validQuestion(randomCountry) == false) {
         randomCountry = getRandomCountry(countries)
     }
     renderQuestion(getCountryFacts(randomCountry), countries)
@@ -19,11 +18,17 @@ function loadNextQuestion(countries) {
 
 function validQuestion(randomCountry) {
     console.log(randomCountry)
-    // debugger
-    if (randomCountry[1].data.government.flag_description == undefined || randomCountry[1].data.people.population.global_rank == undefined || randomCountry[1].data.people.religions.religion[0].name == undefined ) {
+    if (randomCountry[1].data.government.flag_description == undefined ||
+        randomCountry[1].data.people == undefined ||
+        randomCountry[1].data.people.population == undefined ||
+        randomCountry[1].data.people.population.global_rank == undefined ||
+        randomCountry[1].data.people.religions.religion[0].name == undefined ||
+        randomCountry[1].data.government == undefined) {
         return false
     }
-    else {return true}
+    else {
+        return true
+    }
 }
 
 function getRandomInteger(min, max) {
@@ -42,9 +47,9 @@ function getCountryFacts(country) {
         borderCountriesArray.push("no other countries.")
     }
     else {
-    country[1].data.geography.land_boundaries.border_countries.forEach(country => {
-        borderCountriesArray.push(country.country)
-    })
+        country[1].data.geography.land_boundaries.border_countries.forEach(country => {
+            borderCountriesArray.push(country.country)
+        })
     }
     return {
         countryName: country[1].data.name,
@@ -58,7 +63,6 @@ function getCountryFacts(country) {
 }
 
 function renderQuestion(countryFacts, json) {
-    // console.log(countryFacts)
     let pageContainer = document.querySelector(".pageContainer")
     pageContainer.innerHTML = ""
     let buttonArray = []
@@ -100,8 +104,6 @@ function questionAnswered(button) {
     console.log(button)
     // if (button.innerText == )
 }
-
-
 
 var shuffle = function (array) {
     var currentIndex = array.length;
