@@ -68,9 +68,13 @@ function renderQuestion(countryFacts, json) {
     pageContainer.innerHTML = ""
     let buttonArray = []
     buttonArray.push(`<button>${countryFacts.countryName}</button>`)
-    for (let i = 0; i < 3; i++) {
+    i = 0
+    while (i < 3) {
         let randomCountryName = getRandomCountry(json)[1].data.name
-        buttonArray.push(`<button>${randomCountryName}</button>`)
+        if(randomCountryName != countryFacts.countryName) {
+            buttonArray.push(`<button>${randomCountryName}</button>`)
+            i++ 
+        }
     }
     buttonArray = shuffle(buttonArray)
     pageContainer.insertAdjacentHTML("beforeend",
