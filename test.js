@@ -1,10 +1,13 @@
 let countries;
+let currentUser;
+
 fetch(
     "https://raw.githubusercontent.com/iancoleman/cia_world_factbook_api/master/data/factbook.json"
 )
     .then(resp => resp.json())
     .then(function (json) {
         countries = json;
+        console.log(json)
         loadNextQuestion(countries)
     })
 
@@ -71,9 +74,9 @@ function renderQuestion(countryFacts, json) {
     i = 0
     while (i < 3) {
         let randomCountryName = getRandomCountry(json)[1].data.name
-        if(randomCountryName != countryFacts.countryName) {
+        if (randomCountryName != countryFacts.countryName) {
             buttonArray.push(`<button>${randomCountryName}</button>`)
-            i++ 
+            i++
         }
     }
     buttonArray = shuffle(buttonArray)
@@ -96,6 +99,7 @@ function giveAnswer(countryFacts) {
         if (event.target.tagName == 'BUTTON') {
             if (countryFacts.countryName == event.target.innerText) {
                 alert("You right")
+                addPoints(currentUser)
             }
             else {
                 alert("You wrong")
@@ -105,9 +109,59 @@ function giveAnswer(countryFacts) {
     })
 }
 
-function questionAnswered(button) {
-    console.log(button)
-    // if (button.innerText == )
+function login(button) {
+    currentUser = null;
+    let username = prompt("Please enter your unique username ;-)")
+    fetch("http://localhost:3000/users")
+        .then(res => res.json())
+        .then(users => {
+            users.forEach(user => {
+                if (user.name == username) {
+                    addLoginInformation(user)
+                }
+            })
+        })
+}
+
+function addLoginInformation(user) {
+    currentUser = user;
+    let usernameContainer = document.getElementById("user-id")
+    let pointsContainer = document.getElementById("points-id")
+    usernameContainer.innerHTML = `username: ${user.name}`
+    pointsContainer.innerHTML = `points: ${user.total_points}`
+}
+
+function signup(button) {
+    let username = prompt("Please enter a unique username ;-)")
+
+    fetch("http://localhost:3000/users", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({ name: username, total_points: 0 })
+    })
+        .then(res => res.json())
+        .then(user => {
+            addLoginInformation(user)
+        })
+}
+
+function addPoints(user) {
+    let currentPoints = user.total_points + 10;
+    fetch(`http://localhost:3000/users/${user.id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({ total_points: currentPoints })
+    })
+        .then(res => res.json())
+        .then(user => {
+            addLoginInformation(user)
+        })
 }
 
 var shuffle = function (array) {
