@@ -5,12 +5,25 @@ fetch(
     .then(resp => resp.json())
     .then(function (json) {
         countries = json;
+        // debugger
         loadNextQuestion(countries)
     })
 
 function loadNextQuestion(countries) {
     let randomCountry = getRandomCountry(countries)
+    while(validQuestion(randomCountry) == false ) {
+        randomCountry = getRandomCountry(countries)
+    }
     renderQuestion(getCountryFacts(randomCountry), countries)
+}
+
+function validQuestion(randomCountry) {
+    console.log(randomCountry)
+    // debugger
+    if (randomCountry[1].data.government.flag_description == undefined || randomCountry[1].data.people.population.global_rank == undefined || randomCountry[1].data.people.religions.religion[0].name == undefined ) {
+        return false
+    }
+    else {return true}
 }
 
 function getRandomInteger(min, max) {
@@ -22,16 +35,22 @@ function getRandomCountry(json) {
 }
 
 function getCountryFacts(country) {
+
     let borderCountriesArray = []
+    // debugger
+    if (country[1].data.geography.land_boundaries.border_countries == undefined) {
+        borderCountriesArray.push("no other countries.")
+    }
+    else {
     country[1].data.geography.land_boundaries.border_countries.forEach(country => {
         borderCountriesArray.push(country.country)
     })
+    }
     return {
         countryName: country[1].data.name,
         countryComparativeSize: country[1].data.geography.area.comparative,
         flagDescription: country[1].data.government.flag_description.description.split(";")[0],
         mostPopularReligion: country[1].data.people.religions.religion[0].name,
-        religionPercent: country[1].data.people.religions.religion[0].percent,
         populationRank: country[1].data.people.population.global_rank,
         countryLandBoundaries: borderCountriesArray,
         nationalAnthem: country[1].data.government.national_anthem.audio_url
@@ -39,7 +58,7 @@ function getCountryFacts(country) {
 }
 
 function renderQuestion(countryFacts, json) {
-    console.log(countryFacts)
+    // console.log(countryFacts)
     let pageContainer = document.querySelector(".pageContainer")
     pageContainer.innerHTML = ""
     let buttonArray = []
@@ -54,7 +73,7 @@ function renderQuestion(countryFacts, json) {
         <ul>
             <li>I am ${countryFacts.countryComparativeSize}</li>
             <li>My Flag has ${countryFacts.flagDescription}</li>
-            <li>${countryFacts.religionPercent}% of my country is ${countryFacts.mostPopularReligion}</li>
+            <li>My country's most popular religion is ${countryFacts.mostPopularReligion}</li>
             <li>The population rank of this country is #${countryFacts.populationRank}</li>
             <li>My country borders the following: ${countryFacts.countryLandBoundaries.join(", ")}</li>
         </ul>
