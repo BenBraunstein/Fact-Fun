@@ -99,6 +99,7 @@ function giveAnswer(countryFacts) {
         if (event.target.tagName == 'BUTTON') {
             if (countryFacts.countryName == event.target.innerText) {
                 alert("You right")
+                addPoints(currentUser)
             }
             else {
                 alert("You wrong")
@@ -109,8 +110,8 @@ function giveAnswer(countryFacts) {
 }
 
 function login(button) {
+    currentUser = null;
     let username = prompt("Please enter your unique username ;-)")
-    console.log(username)
     fetch("http://localhost:3000/users")
         .then(res => res.json())
         .then(users => {
@@ -128,6 +129,39 @@ function addLoginInformation(user) {
     let pointsContainer = document.getElementById("points-id")
     usernameContainer.innerHTML = `username: ${user.name}`
     pointsContainer.innerHTML = `points: ${user.total_points}`
+}
+
+function signup(button) {
+    let username = prompt("Please enter a unique username ;-)")
+
+    fetch("http://localhost:3000/users", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({ name: username, total_points: 0 })
+    })
+        .then(res => res.json())
+        .then(user => {
+            addLoginInformation(user)
+        })
+}
+
+function addPoints(user) {
+    let currentPoints = user.total_points + 10;
+    fetch(`http://localhost:3000/users/${user.id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({ total_points: currentPoints })
+    })
+        .then(res => res.json())
+        .then(user => {
+            addLoginInformation(user)
+        })
 }
 
 var shuffle = function (array) {
