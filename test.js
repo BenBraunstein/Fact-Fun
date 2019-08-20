@@ -108,11 +108,6 @@ function giveAnswer(countryFacts) {
     })
 }
 
-function questionAnswered(button) {
-    console.log(button)
-    // if (button.innerText == )
-}
-
 function login(button) {
     let username = prompt("Please enter your unique username ;-)")
     console.log(username)
