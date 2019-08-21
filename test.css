@@ -1,13 +1,13 @@
 .questionCard {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
-
+body {
+    background-color:black;
+}
 .nav-bar {
     display: flex; 
     justify-content: space-evenly;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    color: red;
-    background-color:black;
 }
 
 .pageContainer {
@@ -15,9 +15,23 @@
     justify-content: space-evenly;
 }
 
-ul {
+.questionContainer{
+
+    width: 80vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#question-info {
     padding: 0px;
+    width: 85%;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
 
 }
 
@@ -27,10 +41,12 @@ p {
     text-align: center;
     padding: 6px;
     width: 60%;
+    color:white;
 }
 
 button, h1 {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     text-align: center;
+    color: blue;
 }
 
