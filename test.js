@@ -1,6 +1,19 @@
 let countries;
 let currentUser;
 let forbiddeanZones = ["Saint Helena, Ascension, And Tristan Da Cunha", "British Indian Ocean Territory", "European Union", "Southern Ocean"]
+let colorArray = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink"]
+
+document.addEventListener("DOMContentLoaded", function (e) {
+    let allButtons = document.querySelectorAll("button")
+    allButtons.forEach(button => {
+        buttonShuffle(button)
+    })
+})
+
+function buttonShuffle(button) {
+    const shuffled = shuffle(colorArray)
+    button.className = `ui inverted ${shuffled[0]} button`
+}
 
 fetch(
     "https://raw.githubusercontent.com/iancoleman/cia_world_factbook_api/master/data/factbook.json"
@@ -28,7 +41,8 @@ function validQuestion(randomCountry) {
         randomCountry[1].data.people.population.global_rank == undefined ||
         randomCountry[1].data.people.religions == undefined ||
         randomCountry[1].data.people.religions.religion[0].name == undefined ||
-        randomCountry[1].data.government == undefined) {
+        randomCountry[1].data.government == undefined ||
+        randomCountry[1].data.geography == undefined) {
         return false
     }
     else {
@@ -79,29 +93,34 @@ function renderQuestion(countryFacts, json) {
     let pageContainer = document.querySelector(".pageContainer")
     pageContainer.innerHTML = ""
     let buttonArray = []
-    buttonArray.push(`<button>${countryFacts.countryName}</button>`)
+    buttonArray.push(`<button data-type="answer-button">${countryFacts.countryName}</button>`)
     i = 0
     console.log(`${countryFacts.latitude + " " + countryFacts.longitude}`)
     while (i < 3) {
         let randomCountry = getRandomCountry(json)[1].data
-        if ((buttonArray.includes(`<button>${randomCountry.name}</button>`) == false) && !(forbiddeanZones.includes(randomCountry.name)) && randomCountry.geography.geographic_coordinates.latitude.hemisphere == countryFacts.latitude && randomCountry.geography.geographic_coordinates.longitude.hemisphere == countryFacts.longitude) {
+        if (buttonArray.includes(`<button data-type="answer-button">${randomCountry.name}</button>`) == false && !forbiddeanZones.includes(randomCountry.name) && randomCountry.geography.geographic_coordinates.latitude.hemisphere == countryFacts.latitude && randomCountry.geography.geographic_coordinates.longitude.hemisphere == countryFacts.longitude) {
             console.log(`${randomCountry.geography.geographic_coordinates.latitude.hemisphere + " " + randomCountry.geography.geographic_coordinates.longitude.hemisphere}`)
-            buttonArray.push(`<button>${randomCountry.name}</button>`)
+            buttonArray.push(`<button data-type="answer-button">${randomCountry.name}</button>`)
             i++
         }
     }
     buttonArray = shuffle(buttonArray)
     pageContainer.insertAdjacentHTML("beforeend",
-        `<div class='questionContainer'><h1> What Country am I ?</h1 >
-        <ul>
+        `<div class='questionContainer'>
+        <h1> What Country am I ?</h1>
+        <center>${ buttonArray.join(' ')}</center>
+        <center><ul>
             <p>I am ${countryFacts.countryComparativeSize}</p>
             <p>My Flag has ${countryFacts.flagDescription}</p>
             <p>My country's most popular religion is ${countryFacts.mostPopularReligion}</p>
             <p>The population rank of this country is #${countryFacts.populationRank}</p>
             <p>My country borders the following: ${countryFacts.countryLandBoundaries.join(", ")}</p>
             <p>My national anthem: <br>${countryFacts.nationalAnthem}</p>
-        </ul>
-        ${ buttonArray.join(' ')}</div> `)
+        </ul></center></div>`)
+    let answerButtons = document.querySelectorAll("button[data-type='answer-button']")
+    answerButtons.forEach(button => {
+        buttonShuffle(button)
+    })
     giveAnswer(countryFacts)
 }
 
@@ -145,7 +164,7 @@ function logoutUser() {
     currentUser = undefined
     let usernameContainer = document.getElementById("user-id")
     let pointsContainer = document.getElementById("points-id")
-    usernameContainer.innerHTML = `username: `
+    usernameContainer.innerHTML = `Username: `
     pointsContainer.innerHTML = `points: `
 }
 
@@ -153,7 +172,7 @@ function addLoginInformation(user) {
     currentUser = user;
     let usernameContainer = document.getElementById("user-id")
     let pointsContainer = document.getElementById("points-id")
-    usernameContainer.innerHTML = `username: ${user.name}`
+    usernameContainer.innerHTML = `Username: ${user.name}`
     pointsContainer.innerHTML = `points: ${user.total_points}`
 }
 

@@ -2,7 +2,9 @@
 <html>
 
 <head>
-
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
 </head>
 
 <body>
@@ -10,8 +12,8 @@
     <div class="nav-bar">
         <button onclick="signup(this)">Sign Up</button>
         <button onclick="loginLogout(this)">Log in</button>
-        <p id="user-id">username: </p>
-        <p id="points-id">points: </p>
+        <button id="user-id" disabled>username: </button>
+        <button id="points-id" disabled>points: </button>
     </div>
     <div class="pageContainer">
         <!-- <h1>What Country am I?</h1>
