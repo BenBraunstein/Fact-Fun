@@ -1,5 +1,6 @@
 let countries;
 let currentUser;
+let forbiddeanZones = ["Saint Helena, Ascension, And Tristan Da Cunha", "British Indian Ocean Territory", "European Union", "Southern Ocean"]
 
 fetch(
     "https://raw.githubusercontent.com/iancoleman/cia_world_factbook_api/master/data/factbook.json"
@@ -46,7 +47,6 @@ function getRandomCountry(json) {
 function getCountryFacts(country) {
 
     let borderCountriesArray = []
-    // debugger
     if (country[1].data.geography.land_boundaries.border_countries == undefined) {
         borderCountriesArray.push("no other countries.")
     }
@@ -69,7 +69,9 @@ function getCountryFacts(country) {
         mostPopularReligion: country[1].data.people.religions.religion[0].name,
         populationRank: country[1].data.people.population.global_rank,
         countryLandBoundaries: borderCountriesArray,
-        nationalAnthem: nationalAnthem
+        nationalAnthem: nationalAnthem,
+        latitude: country[1].data.geography.geographic_coordinates.latitude.hemisphere,
+        longitude: country[1].data.geography.geographic_coordinates.longitude.hemisphere
     }
 }
 
@@ -79,10 +81,12 @@ function renderQuestion(countryFacts, json) {
     let buttonArray = []
     buttonArray.push(`<button>${countryFacts.countryName}</button>`)
     i = 0
+    console.log(`${countryFacts.latitude + " " + countryFacts.longitude}`)
     while (i < 3) {
-        let randomCountryName = getRandomCountry(json)[1].data.name
-        if (randomCountryName != countryFacts.countryName) {
-            buttonArray.push(`<button>${randomCountryName}</button>`)
+        let randomCountry = getRandomCountry(json)[1].data
+        if ((buttonArray.includes(`<button>${randomCountry.name}</button>`) == false) && !(forbiddeanZones.includes(randomCountry.name)) && randomCountry.geography.geographic_coordinates.latitude.hemisphere == countryFacts.latitude && randomCountry.geography.geographic_coordinates.longitude.hemisphere == countryFacts.longitude) {
+            console.log(`${randomCountry.geography.geographic_coordinates.latitude.hemisphere + " " + randomCountry.geography.geographic_coordinates.longitude.hemisphere}`)
+            buttonArray.push(`<button>${randomCountry.name}</button>`)
             i++
         }
     }
@@ -90,12 +94,12 @@ function renderQuestion(countryFacts, json) {
     pageContainer.insertAdjacentHTML("beforeend",
         `<div class='questionContainer'><h1> What Country am I ?</h1 >
         <ul>
-            <li>I am ${countryFacts.countryComparativeSize}</li>
-            <li>My Flag has ${countryFacts.flagDescription}</li>
-            <li>My country's most popular religion is ${countryFacts.mostPopularReligion}</li>
-            <li>The population rank of this country is #${countryFacts.populationRank}</li>
-            <li>My country borders the following: ${countryFacts.countryLandBoundaries.join(", ")}</li>
-            <li>My national anthem: <br>${countryFacts.nationalAnthem}</li>
+            <p>I am ${countryFacts.countryComparativeSize}</p>
+            <p>My Flag has ${countryFacts.flagDescription}</p>
+            <p>My country's most popular religion is ${countryFacts.mostPopularReligion}</p>
+            <p>The population rank of this country is #${countryFacts.populationRank}</p>
+            <p>My country borders the following: ${countryFacts.countryLandBoundaries.join(", ")}</p>
+            <p>My national anthem: <br>${countryFacts.nationalAnthem}</p>
         </ul>
         ${ buttonArray.join(' ')}</div> `)
     giveAnswer(countryFacts)
