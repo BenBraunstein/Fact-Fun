@@ -55,6 +55,13 @@ function getCountryFacts(country) {
             borderCountriesArray.push(country.country)
         })
     }
+    let nationalAnthem;
+    if (country[1].data.government.national_anthem.audio_url == undefined) {
+        nationalAnthem = "none available"
+    }
+    else {
+        nationalAnthem = `<audio controls src="${country[1].data.government.national_anthem.audio_url}"></audio>`
+    }
     return {
         countryName: country[1].data.name,
         countryComparativeSize: country[1].data.geography.area.comparative,
@@ -62,7 +69,7 @@ function getCountryFacts(country) {
         mostPopularReligion: country[1].data.people.religions.religion[0].name,
         populationRank: country[1].data.people.population.global_rank,
         countryLandBoundaries: borderCountriesArray,
-        nationalAnthem: country[1].data.government.national_anthem.audio_url
+        nationalAnthem: nationalAnthem
     }
 }
 
@@ -88,8 +95,9 @@ function renderQuestion(countryFacts, json) {
             <li>My country's most popular religion is ${countryFacts.mostPopularReligion}</li>
             <li>The population rank of this country is #${countryFacts.populationRank}</li>
             <li>My country borders the following: ${countryFacts.countryLandBoundaries.join(", ")}</li>
+            <li>My national anthem: <br>${countryFacts.nationalAnthem}</li>
         </ul>
-        ${buttonArray.join(' ')}</div>`)
+        ${ buttonArray.join(' ')}</div> `)
     giveAnswer(countryFacts)
 }
 
