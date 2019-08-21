@@ -112,7 +112,7 @@ function giveAnswer(countryFacts) {
 function login(button) {
     currentUser = null;
     let username = prompt("Please enter your unique username ;-)")
-    fetch("http://localhost:3000/users")
+    fetch("https://fathomless-spire-66985.herokuapp.com/users")
         .then(res => res.json())
         .then(users => {
             users.forEach(user => {
@@ -134,7 +134,7 @@ function addLoginInformation(user) {
 function signup(button) {
     let username = prompt("Please enter a unique username ;-)")
 
-    fetch("http://localhost:3000/users", {
+    fetch("https://fathomless-spire-66985.herokuapp.com/users", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -150,7 +150,7 @@ function signup(button) {
 
 function addPoints(user) {
     let currentPoints = user.total_points + 10;
-    fetch(`http://localhost:3000/users/${user.id}`, {
+    fetch(`https://fathomless-spire-66985.herokuapp.com/users/${user.id}`, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json",
