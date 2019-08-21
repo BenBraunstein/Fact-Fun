@@ -9,3 +9,23 @@
     color: red;
     background-color:lightblue;
 }
+
+.pageContainer {
+    display: flex; 
+    justify-content: space-evenly;
+}
+
+ul {
+    display: flex; 
+    justify-content: space-evenly;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
+p {
+    border-style: solid;
+    text-align: center;
+}
+
+button, h1 {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
