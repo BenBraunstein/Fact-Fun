@@ -117,18 +117,32 @@ function giveAnswer(countryFacts) {
     })
 }
 
-function login(button) {
-    currentUser = null;
-    let username = prompt("Please enter your unique username ;-)")
-    fetch("https://fathomless-spire-66985.herokuapp.com/users")
-        .then(res => res.json())
-        .then(users => {
-            users.forEach(user => {
-                if (user.name == username) {
-                    addLoginInformation(user)
-                }
+function loginLogout(button) {
+    if (currentUser == undefined) {
+        let username = prompt("Please enter your unique username ;-)")
+        fetch("https://fathomless-spire-66985.herokuapp.com/users")
+            .then(res => res.json())
+            .then(users => {
+                users.forEach(user => {
+                    if (user.name == username) {
+                        addLoginInformation(user)
+                    }
+                })
             })
-        })
+        button.innerText = "Log out"
+    }
+    else {
+        logoutUser()
+        button.innerText = "Log in"
+    }
+}
+
+function logoutUser() {
+    currentUser = undefined
+    let usernameContainer = document.getElementById("user-id")
+    let pointsContainer = document.getElementById("points-id")
+    usernameContainer.innerHTML = `username: `
+    pointsContainer.innerHTML = `points: `
 }
 
 function addLoginInformation(user) {
