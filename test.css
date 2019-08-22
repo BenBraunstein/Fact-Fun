@@ -36,8 +36,6 @@ body {
 }
 
 p {
-    border-style: solid;
-    border-radius: 15px;
     text-align: center;
     padding: 6px;
     width: 60%;

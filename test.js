@@ -107,9 +107,10 @@ function renderQuestion(countryFacts, json) {
     buttonArray = shuffle(buttonArray)
     pageContainer.insertAdjacentHTML("beforeend",
         `<div class='questionContainer'>
-        <h1> What Country am I ?</h1>
+        <h1><button data-type="answer-button" disabled>WHAT COUNTRY AM I ?</button></h1>
         <center>${ buttonArray.join(' ')}</center>
         <ul id="question-info">
+            <p><button data-type="answer-button" disabled><--------use the facts below to help you make a guess--------></button></p>
             <p><button data-type="answer-button" disabled>I am ${countryFacts.countryComparativeSize}</button></p>
             <p><button data-type="answer-button" disabled>My Flag has ${countryFacts.flagDescription}</button></p>
             <p><button data-type="answer-button" disabled>The average religious person in my country is ${countryFacts.mostPopularReligion}</button></p>
