@@ -110,12 +110,12 @@ function renderQuestion(countryFacts, json) {
         <h1> What Country am I ?</h1>
         <center>${ buttonArray.join(' ')}</center>
         <ul id="question-info">
-            <p>I am ${countryFacts.countryComparativeSize}</p>
-            <p>My Flag has ${countryFacts.flagDescription}</p>
-            <p>My country's most popular religion is ${countryFacts.mostPopularReligion}</p>
-            <p>The population rank of this country is #${countryFacts.populationRank}</p>
-            <p>My country borders the following: ${countryFacts.countryLandBoundaries.join(", ")}</p>
-            <p>My national anthem: <br>${countryFacts.nationalAnthem}</p>
+            <p><button data-type="answer-button" disabled>I am ${countryFacts.countryComparativeSize}</button></p>
+            <p><button data-type="answer-button" disabled>My Flag has ${countryFacts.flagDescription}</button></p>
+            <p><button data-type="answer-button" disabled>My country's most popular religion is ${countryFacts.mostPopularReligion}</button></p>
+            <p><button data-type="answer-button" disabled>The population rank of this country is #${countryFacts.populationRank}</button></p>
+            <p><button data-type="answer-button" disabled>My country borders the following: ${countryFacts.countryLandBoundaries.join(", ")}</button></p>
+            <p><button data-type="answer-button" disabled>My national anthem: </button><br>${countryFacts.nationalAnthem}</p>
         </ul></div>`)
     let answerButtons = document.querySelectorAll("button[data-type='answer-button']")
     answerButtons.forEach(button => {
