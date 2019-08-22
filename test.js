@@ -112,7 +112,7 @@ function renderQuestion(countryFacts, json) {
         <ul id="question-info">
             <p><button data-type="answer-button" disabled>I am ${countryFacts.countryComparativeSize}</button></p>
             <p><button data-type="answer-button" disabled>My Flag has ${countryFacts.flagDescription}</button></p>
-            <p><button data-type="answer-button" disabled>My country's most popular religion is ${countryFacts.mostPopularReligion}</button></p>
+            <p><button data-type="answer-button" disabled>The average religious person in my country is ${countryFacts.mostPopularReligion}</button></p>
             <p><button data-type="answer-button" disabled>The population rank of this country is #${countryFacts.populationRank}</button></p>
             <p><button data-type="answer-button" disabled>My country borders the following: ${countryFacts.countryLandBoundaries.join(", ")}</button></p>
             <p><button data-type="answer-button" disabled>My national anthem: </button><br>${countryFacts.nationalAnthem}</p>
