@@ -133,7 +133,7 @@ function giveAnswer(countryFacts) {
                 addPoints(currentUser)
             }
             else {
-                alert("You wrong")
+                alert(`"You wrong! The correct answer was ${countryFacts.countryName}"`)
             }
             loadNextQuestion(countries)
         }
