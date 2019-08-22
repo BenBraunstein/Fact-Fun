@@ -48,3 +48,24 @@ p {
     padding: 10px;
 }
 
+.marquee {
+    border: 2px solid black;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  
+  .marquee1 {
+    display: inline-block;
+    animation: marquee1 10s 
+    linear infinite;
+  }
+  
+  @keyframes marquee1 {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  

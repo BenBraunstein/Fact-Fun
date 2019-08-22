@@ -1,5 +1,7 @@
 let countries;
 let currentUser;
+let topThreeUsers;
+let allUsers;
 let forbiddeanZones = ["Saint Helena, Ascension, And Tristan Da Cunha", "British Indian Ocean Territory", "European Union", "Southern Ocean"]
 let colorArray = ["red", "orange", "yellow", "olive", "green", "teal", "blue", "violet", "purple", "pink"]
 
@@ -32,6 +34,7 @@ function factButtonShuffle(p) {
 }
 
 function loadNextQuestion(countries) {
+    grabTopThreeUsers()
     let randomCountry = getRandomCountry(countries)
     while (validQuestion(randomCountry) == false) {
         randomCountry = getRandomCountry(countries)
@@ -40,7 +43,6 @@ function loadNextQuestion(countries) {
 }
 
 function validQuestion(randomCountry) {
-    console.log(randomCountry)
     if (randomCountry[1].data.government.flag_description == undefined ||
         randomCountry[1].data.people == undefined ||
         randomCountry[1].data.people.population == undefined ||
@@ -101,18 +103,23 @@ function renderQuestion(countryFacts, json) {
     let buttonArray = []
     buttonArray.push(`<button data-type="answer-button">${countryFacts.countryName}</button>`)
     i = 0
-    console.log(`${countryFacts.latitude + " " + countryFacts.longitude}`)
     while (i < 3) {
         let randomCountry = getRandomCountry(json)[1].data
         if (buttonArray.includes(`<button data-type="answer-button">${randomCountry.name}</button>`) == false && !forbiddeanZones.includes(randomCountry.name) && randomCountry.geography.geographic_coordinates.latitude.hemisphere == countryFacts.latitude && randomCountry.geography.geographic_coordinates.longitude.hemisphere == countryFacts.longitude) {
-            console.log(`${randomCountry.geography.geographic_coordinates.latitude.hemisphere + " " + randomCountry.geography.geographic_coordinates.longitude.hemisphere}`)
             buttonArray.push(`<button data-type="answer-button">${randomCountry.name}</button>`)
             i++
         }
     }
     buttonArray = shuffle(buttonArray)
+
     pageContainer.insertAdjacentHTML("beforeend",
         `<div class='questionContainer'>
+        <div class="marquee">
+        <div class="marquee1">
+        <p>Username: ${allUsers[0].name + " Total Points:" + allUsers[0].total_points}</p>
+        <p>Username: ${allUsers[1].name + " Total Points:" + allUsers[1].total_points}</p>
+        <p>Username: ${allUsers[2].name + " Total Points:" + allUsers[2].total_points}</p>
+        </div></div>
         <br><p>WHAT COUNTRY AM I ?</p><br>
         <center>${ buttonArray.join(' ')}</center>
         <ul id="question-info">
@@ -122,7 +129,7 @@ function renderQuestion(countryFacts, json) {
             <p>The average religious person in my country is ${countryFacts.mostPopularReligion}</p>
             <p>The population rank of this country is #${countryFacts.populationRank}</p>
             <p>My country borders the following: ${countryFacts.countryLandBoundaries.join(", ")}</p>
-        <p>My national anthem: <br>${countryFacts.nationalAnthem}</p>
+        <p>My national anthem: <br><br>${countryFacts.nationalAnthem}</p>
         </ul></div > `)
     let answerButtons = document.querySelectorAll("button[data-type='answer-button']")
     answerButtons.forEach(button => {
@@ -157,11 +164,13 @@ function loginLogout(button) {
         fetch("https://fathomless-spire-66985.herokuapp.com/users")
             .then(res => res.json())
             .then(users => {
+                allUsers = users;
                 currentUser = users.find(user => user.name == username)
                 if (currentUser == undefined) {
                     alert("Please try login again.")
                 }
                 else {
+                    grabTopThreeUsers()
                     addLoginInformation(currentUser)
                     button.innerText = "Log out"
                     fetchCountries()
@@ -172,6 +181,15 @@ function loginLogout(button) {
         logoutUser()
         button.innerText = "Log in"
     }
+}
+
+function grabTopThreeUsers() {
+    fetch("https://fathomless-spire-66985.herokuapp.com/users")
+        .then(res => res.json())
+        .then(users => {
+            allUsers = users
+        })
+    topThreeUsers = allUsers.slice(0, 3)
 }
 
 function logoutUser() {
@@ -185,6 +203,7 @@ function logoutUser() {
 }
 
 function addLoginInformation(user) {
+    grabTopThreeUsers()
     currentUser = user;
     let usernameContainer = document.getElementById("user-id")
     let pointsContainer = document.getElementById("points-id")
