@@ -8,7 +8,18 @@ document.addEventListener("DOMContentLoaded", function (e) {
     allButtons.forEach(button => {
         buttonShuffle(button)
     })
+    alert("You must login to see a question")
 })
+
+function fetchCountries() {
+    fetch(
+        "https://raw.githubusercontent.com/iancoleman/cia_world_factbook_api/master/data/factbook.json")
+        .then(resp => resp.json())
+        .then(function (json) {
+            countries = json;
+            loadNextQuestion(countries)
+        })
+}
 
 function buttonShuffle(button) {
     const shuffled = shuffle(colorArray)
@@ -19,16 +30,6 @@ function factButtonShuffle(p) {
     const shuffled = shuffle(colorArray)
     p.className = `ui ${shuffled[0]} basic button`
 }
-
-fetch(
-    "https://raw.githubusercontent.com/iancoleman/cia_world_factbook_api/master/data/factbook.json"
-)
-    .then(resp => resp.json())
-    .then(function (json) {
-        countries = json;
-        console.log(json)
-        loadNextQuestion(countries)
-    })
 
 function loadNextQuestion(countries) {
     let randomCountry = getRandomCountry(countries)
@@ -156,13 +157,16 @@ function loginLogout(button) {
         fetch("https://fathomless-spire-66985.herokuapp.com/users")
             .then(res => res.json())
             .then(users => {
-                users.forEach(user => {
-                    if (user.name == username) {
-                        addLoginInformation(user)
-                    }
-                })
+                currentUser = users.find(user => user.name == username)
+                if (currentUser == undefined) {
+                    alert("Please try login again.")
+                }
+                else {
+                    addLoginInformation(currentUser)
+                    button.innerText = "Log out"
+                    fetchCountries()
+                }
             })
-        button.innerText = "Log out"
     }
     else {
         logoutUser()
@@ -176,6 +180,8 @@ function logoutUser() {
     let pointsContainer = document.getElementById("points-id")
     usernameContainer.innerHTML = `Username: `
     pointsContainer.innerHTML = `points: `
+    let questionContainer = document.querySelector(".questionContainer")
+    questionContainer.innerHTML = ""
 }
 
 function addLoginInformation(user) {
