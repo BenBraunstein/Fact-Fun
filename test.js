@@ -192,21 +192,30 @@ function addLoginInformation(user) {
     pointsContainer.innerHTML = `points: ${user.total_points}`
 }
 
-function signup(button) {
+function signup() {
     let username = prompt("Please enter a unique username ;-)")
-
-    fetch("https://fathomless-spire-66985.herokuapp.com/users", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        },
-        body: JSON.stringify({ name: username, total_points: 0 })
-    })
-        .then(res => res.json())
-        .then(user => {
-            addLoginInformation(user)
+    if (username != null && username != undefined) {
+        fetch("https://fathomless-spire-66985.herokuapp.com/users", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({ name: username, total_points: 0 })
         })
+            .then(res => res.json())
+            .then(user => {
+                if (user.id == null) {
+                    alert("username already taken")
+                }
+                else {
+                    addLoginInformation(user)
+                    let loginButton = document.getElementById("login-btn")
+                    loginButton.innerText = "Log out"
+                    fetchCountries()
+                }
+            })
+    }
 }
 
 function addPoints(user) {
