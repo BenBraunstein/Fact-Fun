@@ -35,16 +35,16 @@ body {
 
 }
 
+ul {
+    display: flex;
+    
+}
+
 p {
     text-align: center;
     padding: 6px;
     width: 60%;
     color:white;
-}
-
-h1 {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    text-align: center;
-    color: blue;
+    padding: 10px;
 }
 

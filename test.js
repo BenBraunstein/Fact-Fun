@@ -15,6 +15,11 @@ function buttonShuffle(button) {
     button.className = `ui inverted ${shuffled[0]} button`
 }
 
+function factButtonShuffle(p) {
+    const shuffled = shuffle(colorArray)
+    p.className = `ui ${shuffled[0]} basic button`
+}
+
 fetch(
     "https://raw.githubusercontent.com/iancoleman/cia_world_factbook_api/master/data/factbook.json"
 )
@@ -107,21 +112,25 @@ function renderQuestion(countryFacts, json) {
     buttonArray = shuffle(buttonArray)
     pageContainer.insertAdjacentHTML("beforeend",
         `<div class='questionContainer'>
-        <h1><button data-type="answer-button" disabled>WHAT COUNTRY AM I ?</button></h1>
+        <br><p>WHAT COUNTRY AM I ?</p><br>
         <center>${ buttonArray.join(' ')}</center>
         <ul id="question-info">
-            <p><button data-type="answer-button" disabled><--------use the facts below to help you make a guess--------></button></p>
-            <p><button data-type="answer-button" disabled>I am ${countryFacts.countryComparativeSize}</button></p>
-            <p><button data-type="answer-button" disabled>My Flag has ${countryFacts.flagDescription}</button></p>
-            <p><button data-type="answer-button" disabled>The average religious person in my country is ${countryFacts.mostPopularReligion}</button></p>
-            <p><button data-type="answer-button" disabled>The population rank of this country is #${countryFacts.populationRank}</button></p>
-            <p><button data-type="answer-button" disabled>My country borders the following: ${countryFacts.countryLandBoundaries.join(", ")}</button></p>
-            <p><button data-type="answer-button" disabled>My national anthem: </button><br>${countryFacts.nationalAnthem}</p>
-        </ul></div>`)
+            <p><--------use the facts below to help you make a guess--------></p>
+            <p>I am ${countryFacts.countryComparativeSize}</p>
+            <p>My Flag has ${countryFacts.flagDescription}</p>
+            <p>The average religious person in my country is ${countryFacts.mostPopularReligion}</p>
+            <p>The population rank of this country is #${countryFacts.populationRank}</p>
+            <p>My country borders the following: ${countryFacts.countryLandBoundaries.join(", ")}</p>
+        <p>My national anthem: <br>${countryFacts.nationalAnthem}</p>
+        </ul></div > `)
     let answerButtons = document.querySelectorAll("button[data-type='answer-button']")
     answerButtons.forEach(button => {
         buttonShuffle(button)
     })
+    const allPs = document.querySelectorAll('p')
+    allPs.forEach(p => {
+        factButtonShuffle(p)
+    });
     giveAnswer(countryFacts)
 }
 
