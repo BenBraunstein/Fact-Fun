@@ -56,7 +56,7 @@ p {
 
 .marquee1 {
   display: inline-block;
-  animation: marquee1 6s linear infinite;
+  animation: marquee1 3s linear infinite;
 }
 
 @keyframes marquee1 {
@@ -64,6 +64,6 @@ p {
     transform: translateX(100%);
   }
   to {
-    transform: translateX(-185%);
+    transform: translateX(-100%);
   }
 }
