@@ -14,7 +14,7 @@ Fact fun is likely in its final state.
 Indentation.
 
 ## Frameworks
-This app uses vanilla Javascript
+This app uses vanilla Javascript with a Rails API backend to track user scores. 
 
 ## Installation
 Simply open test.html to access the game.  
