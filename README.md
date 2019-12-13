@@ -4,7 +4,7 @@ Welcome to the Fact Fun Front-End!
 
 ## Demo
 
-[Try it!](https://mildlyconfused.github.io/Fact-Fun/test.html)
+[Try it!](https://benbraunstein.github.io/Fact-Fun/test.html)
 
 ## Motivation
 
